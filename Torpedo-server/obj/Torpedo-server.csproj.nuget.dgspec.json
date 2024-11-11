@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\muskovszky.tamas\\source\\repos\\Torpedo\\Torpedo-server\\Torpedo-server.csproj": {}
+    "C:\\Users\\szidor.mihaly\\Source\\Repos\\Torpedo\\Torpedo-server\\Torpedo-server.csproj": {}
   },
   "projects": {
-    "C:\\Users\\muskovszky.tamas\\source\\repos\\Torpedo\\Torpedo-server\\Torpedo-server.csproj": {
+    "C:\\Users\\szidor.mihaly\\Source\\Repos\\Torpedo\\Torpedo-server\\Torpedo-server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\muskovszky.tamas\\source\\repos\\Torpedo\\Torpedo-server\\Torpedo-server.csproj",
+        "projectUniqueName": "C:\\Users\\szidor.mihaly\\Source\\Repos\\Torpedo\\Torpedo-server\\Torpedo-server.csproj",
         "projectName": "Torpedo-server",
-        "projectPath": "C:\\Users\\muskovszky.tamas\\source\\repos\\Torpedo\\Torpedo-server\\Torpedo-server.csproj",
-        "packagesPath": "C:\\Users\\muskovszky.tamas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\muskovszky.tamas\\source\\repos\\Torpedo\\Torpedo-server\\obj\\",
+        "projectPath": "C:\\Users\\szidor.mihaly\\Source\\Repos\\Torpedo\\Torpedo-server\\Torpedo-server.csproj",
+        "packagesPath": "C:\\Users\\szidor.mihaly\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\szidor.mihaly\\Source\\Repos\\Torpedo\\Torpedo-server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\muskovszky.tamas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\szidor.mihaly\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -45,6 +45,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

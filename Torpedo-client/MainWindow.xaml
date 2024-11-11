@@ -1,12 +1,69 @@
 ﻿<Window x:Class="Torpedo_client.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Torpedo_client"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Torpedo Game" Height="600" Width="600">
 
+    <Grid>
+        <!-- Coordinates A-J (columns) and 1-10 (rows) -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Coordinates labels for columns -->
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="A" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="B" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="3" Text="C" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="4" Text="D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="5" Text="E" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="6" Text="F" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="7" Text="G" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="8" Text="H" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="9" Text="I" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="0" Grid.Column="10" Text="J" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <!-- Coordinates labels for rows -->
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="6" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="7" Grid.Column="0" Text="7" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="8" Grid.Column="0" Text="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="9" Grid.Column="0" Text="9" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="10" Grid.Column="0" Text="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <!-- The 10x10 grid -->
+        <Grid Name="GameBoard" Grid.Row="1" Grid.Column="1" Grid.RowSpan="10" Grid.ColumnSpan="10">
+            <Grid.Background>
+                <SolidColorBrush Color="LightBlue"/>
+            </Grid.Background>
+        </Grid>
+
+        <!-- Draggable Boat Image -->
+        <Image Name="Boat" Width="50" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Source="boat.png" AllowDrop="True" MouseLeftButtonDown="Boat_MouseLeftButtonDown" />
     </Grid>
 </Window>

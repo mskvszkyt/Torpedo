@@ -1,10 +1,26 @@
-﻿namespace Torpedo_server
+﻿using System;
+
+namespace TorpedoServer
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            try
+            {
+                // Create a new instance of the GameServer
+                GameServer gameServer = new GameServer();
+
+                // Start the server
+                gameServer.Start();
+
+                Console.WriteLine("Server is running. Press any key to exit...");
+                Console.ReadKey();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
         }
     }
 }
