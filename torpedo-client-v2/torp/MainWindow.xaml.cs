@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -22,6 +23,7 @@ namespace ShipPlacement
 
         private bool isVertical = true; // Tracks rotation (vertical by default)
         private TcpClient client;
+        private bool isMyTurn = false; // Flag to check if it's the client's turn
 
         public MainWindow()
         {
@@ -45,6 +47,7 @@ namespace ShipPlacement
             if (e.Key == Key.R)
             {
                 isVertical = !isVertical;
+                lblOrientation.Content = isVertical ? "Orientation: Vertical" : "Orientation: Horizontal";
             }
         }
 
@@ -70,10 +73,9 @@ namespace ShipPlacement
                     return;
                 }
 
-                PlaceShip(row, column, size);
+                PlaceShip(row, column, size, shipTag);
                 placedShips[shipTag] = true;
 
-                // Enable Ready button if all ships are placed
                 if (AllShipsPlaced())
                 {
                     ReadyButton.IsEnabled = true;
@@ -133,13 +135,23 @@ namespace ShipPlacement
             return false;
         }
 
-        private void PlaceShip(int row, int column, int size)
+        private void PlaceShip(int row, int column, int size, string shipTag)
         {
+            SolidColorBrush color = shipTag switch
+            {
+                "AircraftCarrier" => Brushes.LightBlue,
+                "Battleship" => Brushes.LightGreen,
+                "Submarine" => Brushes.LightYellow,
+                "Cruiser" => Brushes.LightCoral,
+                "Destroyer" => Brushes.LightGray,
+                _ => Brushes.AliceBlue
+            };
+
             for (int i = 0; i < size; i++)
             {
                 Rectangle rect = new Rectangle
                 {
-                    Fill = Brushes.LightBlue,
+                    Fill = color,
                     Stroke = Brushes.Black
                 };
                 if (isVertical)
@@ -169,18 +181,104 @@ namespace ShipPlacement
         {
             try
             {
-                // Initialize TCP client
                 client = new TcpClient("127.0.0.1", 12345);
                 MessageBox.Show("Connected to server!");
 
-                // Send "Ready" message
                 string message = "Ready";
                 byte[] data = Encoding.ASCII.GetBytes(message);
                 client.GetStream().Write(data, 0, data.Length);
+
+                ReadyButton.IsEnabled = false;
+                ListenForServerMessages();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Failed to connect to server: {ex.Message}");
+            }
+        }
+
+        private void ListenForServerMessages()
+        {
+            Thread listenerThread = new Thread(() =>
+            {
+                NetworkStream stream = client.GetStream();
+                byte[] buffer = new byte[1024];
+
+                while (true)
+                {
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    if (bytesRead == 0) break;
+
+                    string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    if (message.Equals("ChangeBackgroundColor"))
+                    {
+                        Dispatcher.Invoke(() => ChangeGridColor());
+                    }
+                    else if (message.Equals("YourTurn"))
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            isMyTurn = true;
+                            EnableRightGrid(true);
+                            MessageBox.Show("Te következel! Válassz egy cellát.");
+                        });
+                    }
+                    else if (message.Equals("WaitForYourTurn"))
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            isMyTurn = false;
+                            EnableRightGrid(false);
+                            MessageBox.Show("A másik játékos van soron. Kérlek, várj.");
+                        });
+                    }
+                }
+            });
+
+            listenerThread.IsBackground = true;
+            listenerThread.Start();
+        }
+
+        private void ChangeGridColor()
+        {
+            RightGrid.Background = Brushes.White;
+        }
+
+        private void EnableRightGrid(bool enable)
+        {
+            foreach (UIElement child in RightGrid.Children)
+            {
+                if (child is Button button)
+                {
+                    button.IsEnabled = enable;
+                }
+            }
+
+            RightGrid.Background = enable ? Brushes.White : Brushes.LightGray;
+        }
+
+        private void Cell_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!isMyTurn)
+            {
+                MessageBox.Show("Nem a te köröd! Várj, amíg a másik játékos lép.");
+                return;
+            }
+
+            Rectangle clickedCell = sender as Rectangle;
+            if (clickedCell != null)
+            {
+                clickedCell.Fill = Brushes.LightBlue;
+
+                int row = Grid.GetRow(clickedCell);
+                int column = Grid.GetColumn(clickedCell);
+                string message = $"Select:{row}:{column}";
+
+                byte[] data = Encoding.ASCII.GetBytes(message);
+                client.GetStream().Write(data, 0, data.Length);
+
+                isMyTurn = false;
+                EnableRightGrid(false);
             }
         }
     }

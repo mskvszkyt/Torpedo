@@ -31,6 +31,7 @@
                        Padding="5" MouseMove="Ship_MouseMove" Tag="Cruiser"/>
             <TextBlock Text="Destroyer (2)" Margin="5" Background="LightGray" 
                        Padding="5" MouseMove="Ship_MouseMove" Tag="Destroyer"/>
+            <Label HorizontalContentAlignment="Center" x:Name="lblOrientation">Orientation: Horizontal</Label>
         </StackPanel>
 
         <!-- Left 10x10 Grid -->
@@ -62,8 +63,8 @@
             </Grid.ColumnDefinitions>
         </Grid>
 
-        <!-- Right 10x10 Grid (Disabled) -->
-        <Grid Grid.Column="2" Grid.Row="1" Margin="5" Background="Gray" ShowGridLines="True" IsEnabled="False">
+        <!-- Right 10x10 Grid (Enabled for selecting) -->
+        <Grid x:Name="RightGrid" Grid.Column="2" Grid.Row="1" Margin="5" Background="Gray" ShowGridLines="True" IsEnabled="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -88,11 +89,24 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+
+            <!-- Define Rectangle for each cell in the grid -->
+            <Rectangle Grid.Row="0" Grid.Column="0" Fill="Transparent" Stroke="Black" MouseDown="Cell_MouseDown"/>
+            <Rectangle Grid.Row="0" Grid.Column="1" Fill="Transparent" Stroke="Black" MouseDown="Cell_MouseDown"/>
+            <Rectangle Grid.Row="0" Grid.Column="2" Fill="Transparent" Stroke="Black" MouseDown="Cell_MouseDown"/>
+            <Rectangle Grid.Row="0" Grid.Column="3" Fill="Transparent" Stroke="Black" MouseDown="Cell_MouseDown"/>
+            <Rectangle Grid.Row="0" Grid.Column="4" Fill="Transparent" Stroke="Black" MouseDown="Cell_MouseDown"/>
+            <Rectangle Grid.Row="0" Grid.Column="5" Fill="Transparent" Stroke="Black" MouseDown="Cell_MouseDown"/>
+            <Rectangle Grid.Row="0" Grid.Column="6" Fill="Transparent" Stroke="Black" MouseDown="Cell_MouseDown"/>
+            <Rectangle Grid.Row="0" Grid.Column="7" Fill="Transparent" Stroke="Black" MouseDown="Cell_MouseDown"/>
+            <Rectangle Grid.Row="0" Grid.Column="8" Fill="Transparent" Stroke="Black" MouseDown="Cell_MouseDown"/>
+            <Rectangle Grid.Row="0" Grid.Column="9" Fill="Transparent" Stroke="Black" MouseDown="Cell_MouseDown"/>
+            <!-- Add all remaining rectangles for each of the grid cells -->
         </Grid>
 
         <!-- Ready Button -->
         <Button Grid.Row="2" Grid.Column="1" Content="Ready" Margin="5" Width="100" 
-        HorizontalAlignment="Center" Click="ReadyButton_Click" IsEnabled="False" Name="ReadyButton"/>
+        HorizontalAlignment="Center" Click="ReadyButton_Click" IsEnabled="True" Name="ReadyButton"/>
 
     </Grid>
 </Window>
