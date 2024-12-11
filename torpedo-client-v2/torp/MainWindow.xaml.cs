@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -24,10 +25,63 @@ namespace ShipPlacement
         private bool isVertical = true; // Tracks rotation (vertical by default)
         private TcpClient client;
         private bool isMyTurn = false; // Flag to check if it's the client's turn
+        private MediaPlayer mediaPlayer = new MediaPlayer();
+        private List<string> musicFiles;
+        private Random random = new Random();
+        private string musicFolderPath = "C:\\Users\\sinka.jozsef\\Desktop\\Torpedo-main\\media\\music\\SoT";
 
         public MainWindow()
         {
             InitializeComponent();
+            InitializeMusicPlayer();
+        }
+
+        private void InitializeMusicPlayer()
+        {
+            // Load all music files from the folder
+            if (Directory.Exists(musicFolderPath))
+            {
+                musicFiles = Directory.GetFiles(musicFolderPath, "*.mp3").ToList();
+                if (musicFiles.Count == 0)
+                {
+                    MessageBox.Show("No music files found in the specified folder.");
+                    return;
+                }
+                PlayRandomSong();
+            }
+            else
+            {
+                MessageBox.Show("The specified music folder does not exist.");
+            }
+        }
+
+        private void PlayRandomSong()
+        {
+            if (musicFiles == null || musicFiles.Count == 0) return;
+
+            string randomSong = musicFiles[random.Next(musicFiles.Count)];
+            mediaPlayer.Open(new Uri(randomSong, UriKind.Absolute));
+            mediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
+            mediaPlayer.Play();
+        }
+
+        private void MediaPlayer_MediaEnded(object sender, EventArgs e)
+        {
+            // Play the next random song when the current one ends
+            PlayRandomSong();
+        }
+
+        private void StopMusic()
+        {
+            mediaPlayer.Stop();
+            mediaPlayer.MediaEnded -= MediaPlayer_MediaEnded; // Remove event handler to avoid multiple triggers
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            // Stop music when the application closes
+            StopMusic();
+            mediaPlayer.Close();
         }
 
         private void Ship_MouseMove(object sender, MouseEventArgs e)
