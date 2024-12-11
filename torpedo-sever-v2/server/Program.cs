@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -62,6 +62,9 @@ namespace ShipPlacementServer
 
                 string message = Encoding.ASCII.GetString(buffer, 0, bytesRead);
                 Console.WriteLine("Received from client " + clientIndex + ": " + message);
+                //string square = message.Substring("SelectSquare".Length);
+                Console.WriteLine(message.Substring("SelectSquare".Length));
+                //HandlePlayerMove(clientIndex, square);
 
                 if (message == "Ready")
                 {
@@ -79,17 +82,22 @@ namespace ShipPlacementServer
                 // Handle player moves (e.g., selecting a square)
                 if (message.StartsWith("SelectSquare"))
                 {
+                    Console.WriteLine("SelectSquare");
                     string square = message.Substring("SelectSquare".Length);
                     HandlePlayerMove(clientIndex, square);
                 }
             }
         }
-
+        
         private static void HandlePlayerMove(int clientIndex, string square)
         {
+            Console.WriteLine('\n');
+            Console.WriteLine(clientIndex);
+            Console.WriteLine(currentPlayerIndex);
             // Check if it's the current player's turn
             if (clientIndex != currentPlayerIndex)
             {
+
                 SendMessage(clients[clientIndex], "WaitForYourTurn");
                 return;
             }
@@ -104,7 +112,7 @@ namespace ShipPlacementServer
             SendMessage(clients[currentPlayerIndex], "YourTurn");
             SendMessage(clients[(currentPlayerIndex + 1) % 2], "WaitForYourTurn");
         }
-
+        
         private static void StartGame()
         {
             // Start the game logic once both players are ready
