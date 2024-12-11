@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -259,7 +259,7 @@ namespace ShipPlacement
 
         private void Cell_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (!isMyTurn)
+            if (isMyTurn)
             {
                 MessageBox.Show("Nem a te köröd! Várj, amíg a másik játékos lép.");
                 return;
